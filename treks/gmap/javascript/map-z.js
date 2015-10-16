@@ -10,17 +10,6 @@ var showWaypoints = true;
 function Main () {
     var arg = location.search;
     
-    var updateMapHeight = function() {
-        var mapDiv = document.getElementById('map'),
-            //infoHeight = document.getElementById('inforow').clientHeight,
-            infoHeight = 0,
-            iehelpHeight = document.getElementById('iehelpDv') ? document.getElementById('iehelpDv').clientHeight : 0; 
-        mapDiv.style.height = (document.getElementsByTagName('body')[0].clientHeight - infoHeight - iehelpHeight - 10) + 'px';
-    }
-    
-    // updateMapHeight();
-    // window.onresize = updateMapHeight;
-    
     var file = "data.xml";
     var n = arg.search(/[?&]src=/gi);
     if (n != -1) {
@@ -175,68 +164,6 @@ function WaypointsCheckBox () {
   } else
     for (var i = 0; i < data.waypoints.length; i++)
       map.removeLayer(data.waypoints[i]);
-}
-
-var userdata;
-
-function UserDataCheckBox () {
-  if (userdata==null || userdata==undefined)
-    return;
-  if (document.getElementById("userdatacheckbox").checked) {
-    for (var i = 0; i < userdata.tracks.length; i++)
-    {
-      var track = userdata.tracks[i];
-      for (var j = 0; j < track.segments.length; j++)
-        map.addOverlay(track.segments[j]);
-    }
-    for (var i = 0; i < userdata.waypoints.length; i++)
-      map.addOverlay(userdata.waypoints[i]);
-    if (BigIcon.gMarker != null) {
-      map.removeOverlay(BigIcon.gMarker);
-      map.addOverlay(BigIcon.gMarker);
-    }
-  } else {
-    for (var i = 0; i < userdata.tracks.length; i++)
-    {
-      var track = userdata.tracks[i];
-      for (var j = 0; j < track.segments.length; j++)
-        map.removeOverlay(track.segments[j]);
-    }
-    for (var i = 0; i < userdata.waypoints.length; i++)
-      map.removeOverlay(userdata.waypoints[i]);
-  }
-}
-
-function UserDataLink () {
-  removeBigIcon();
-  var td = document.getElementById("text");
-  var b = document.createElement("b");
-  var textarea = document.createElement("textarea");
-  var input = document.createElement("input");
-  b.appendChild(document.createTextNode("Paste content of GPX-file here:"));
-  td.appendChild(b);
-  td.appendChild(document.createElement("br"));
-  textarea.setAttribute("id", "string");
-  textarea.setAttribute("style", "width: 100%");
-  td.appendChild(textarea);
-  input.setAttribute("type", "button");
-  input.setAttribute("value", "Load");
-  GEvent.addDomListener(input, "click", LoadString);
-
-  td.appendChild(input);
-}
-
-function ShowUserData () {
-  document.getElementById("userdatacheckbox").checked = true;
-  UserDataCheckBox();
-}
-
-function LoadString() {
-  var str = document.getElementById("string").value;
-  removeBigIcon();
-  document.getElementById("userdatacheckbox").checked = false;
-  UserDataCheckBox();
-  userdata = new GPXFromString(str, null, null, null, null, ShowUserData);
 }
 
 //======================================
