@@ -157,7 +157,11 @@ GPX.readTracks = function () {
         }
         if (trackSegmentPoints.length != 0) {
           // var trackSegment = new GPolyline(trackSegmentPoints, track.color, track.width, track.opacity);
-          var trackSegment = L.polyline(trackSegmentPoints, {color: 'magenta', opacity: 1.0});
+          var trackSegment = L.polyline(trackSegmentPoints, {
+            color: track.color, 
+            opacity: track.opacity,
+            weight: track.width
+          });
           track.segments.push(trackSegment);
         }
       }
