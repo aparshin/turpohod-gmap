@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<gpx xmlns="http://www.topografix.com/GPX/1/1" creator="" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">
+ <bounds minlat="55.689714" minlon="37.902592" maxlat="55.689758" maxlon="37.902655"/>
+ <trk>
+  <name>ACTIVE LOG203506</name>
+  <trkseg>
+   <trkpt lat="55.689714" lon="37.902655">
+    <ele>147.967</ele>
+    <time>2008-05-17T16:35:06Z</time>
+   </trkpt>
+   <trkpt lat="55.689752" lon="37.902605">
+    <ele>146.662</ele>
+    <time>2008-05-17T16:35:10Z</time>
+   </trkpt>
+   <trkpt lat="55.689756" lon="37.902629">
+    <ele>143.231</ele>
+    <time>2008-05-17T16:35:14Z</time>
+   </trkpt>
+   <trkpt lat="55.689752" lon="37.902601">
+    <ele>141.411</ele>
+    <time>2008-05-17T16:35:17Z</time>
+   </trkpt>
+   <trkpt lat="55.689750" lon="37.902592">
+    <ele>139.520</ele>
+    <time>2008-05-17T16:35:20Z</time>
+   </trkpt>
+   <trkpt lat="55.689756" lon="37.902618">
+    <ele>137.381</ele>
+    <time>2008-05-17T16:35:24Z</time>
+   </trkpt>
+   <trkpt lat="55.689758" lon="37.902620">
+    <ele>135.677</ele>
+    <time>2008-05-17T16:35:28Z</time>
+   </trkpt>
+  </trkseg>
+ </trk>
+</gpx>

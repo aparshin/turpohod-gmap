@@ -1,0 +1,22 @@
+﻿<!-- vim: set et ts=2 sw=2 : -->
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"></meta>
+    <title>Route</title>
+    <script type="text/javascript">
+      function setwindow () {
+        location = "map.html"+location.search;
+      }
+    </script>
+    <script src="http://turpohod.narod.ru/treks/gmap/javascript/map-z.js" type="text/javascript"></script>
+  </head>
+  <frameset cols="63%,37%">
+    <frame src="map.html" name="map" scrolling="no"></frame>
+    <frame src="desc.html" name="description"></frame>
+  </frameset>
+  <noframes>
+    <body onLoad="setTimeout('setwindow()', 3000)">
+      <p>Frames don't supported. Redirected to <a href="javascript:setwindow();">map</a>.</p>
+    </body>
+  </noframes>
+</html>
