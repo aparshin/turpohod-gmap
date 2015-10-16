@@ -60,6 +60,7 @@ function ShowMapA () {
   if (data.name != null) {
       document.title = data.name;
   }
+
   map = L.map('map');
   //map = new GMap2(document.getElementById("map"));
   //map.addControl(new GLargeMapControl());
@@ -75,7 +76,12 @@ function ShowMapA () {
   var arbalet = L.tileLayer('http://s3.amazonaws.com/arbalet/z{z}/{y}_{x}.png').addTo(map);
   var osm = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
   
-  L.control.layers({Slazav: slazav, Arbalet: arbalet}, {}, {collapsed: false}).addTo(map);
+  var dummyLayer = {
+    onAdd: function(){},
+    onRemove: function(){}
+  };
+  
+  L.control.layers({Slazav: slazav, Arbalet: arbalet, OSM: dummyLayer}, {}, {collapsed: false}).addTo(map);
   
   /*map.enableContinuousZoom();
   map.enableScrollWheelZoom();
