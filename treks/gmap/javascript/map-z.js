@@ -3,7 +3,7 @@
 var map;
 var data;
 
-var mapType = "arb";
+var mapType;
 var showTracks = true;
 var showWaypoints = true;
 
@@ -31,14 +31,8 @@ function Main () {
       n = mtype.search(/&/gi);
       if (n != -1)
         mtype = mtype.substring(0,n);
-      if (mtype.toLowerCase() == "map")
-        mapType = G_NORMAL_MAP;
-      else if (mtype.toLowerCase() == "sat")
-        mapType = G_SATELLITE_MAP;
-      else if (mtype.toLowerCase() == "hyb")
-        mapType = G_HYBRID_MAP;
-      else if (mtype.toLowerCase() == "arb")
-        mapType = "arb";
+        
+      mapType = mtype.toLowerCase();
     }
 
     data = new GPXFromFile(file, ShowMapA, showTrack, showWaypoint, showSector, ShowMapB);
@@ -51,55 +45,29 @@ function ShowMapA () {
   }
 
   map = L.map('map');
-  //map = new GMap2(document.getElementById("map"));
-  //map.addControl(new GLargeMapControl());
-  //map.addControl(new GMapTypeControl());
-  _mPreferMetric = true;
-  //map.addControl(new GScaleControl());
-
   map.fitBounds([[data.minLat, data.minLon], [data.maxLat, data.maxLon]]);
-  //var zoom = map.getBoundsZoomLevel(new GLatLngBounds(new GLatLng(data.minLat,data.minLon),new GLatLng(data.maxLat,data.maxLon)));
-  //map.setCenter(new GLatLng((data.minLat+data.maxLat)/2,(data.minLon+data.maxLon)/2), zoom);
-  
-  var slazav = L.tileLayer('http://aparshin.ru/maps/slazav/{z}/{x}/{y}.png');
-  var arbalet = L.tileLayer('http://s3.amazonaws.com/arbalet/z{z}/{y}_{x}.png').addTo(map);
-  var osm = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
   
   var dummyLayer = {
     onAdd: function(){},
     onRemove: function(){}
   };
   
-  L.control.layers({Slazav: slazav, Arbalet: arbalet, OSM: dummyLayer}, {}, {collapsed: false}).addTo(map);
+  var baseLayers =  {
+    sla: L.tileLayer('http://aparshin.ru/maps/slazav/{z}/{x}/{y}.png'),
+    arb: L.tileLayer('http://s3.amazonaws.com/arbalet/z{z}/{y}_{x}.png'),
+    osm: dummyLayer
+  }
   
-  /*map.enableContinuousZoom();
-  map.enableScrollWheelZoom();
-  var arbaletMap = GetArbaletMap();
-  map.addMapType(arbaletMap);
-  var slazavMap = GetArbaletSlazavMap();
-  map.addMapType(slazavMap);
-  map.removeMapType(G_NORMAL_MAP);
-  map.removeMapType(G_SATELLITE_MAP)
-  map.removeMapType(G_HYBRID_MAP);
-  map.addMapType(G_SATELLITE_MAP)
-  map.addMapType(G_HYBRID_MAP);
-  map.addMapType(G_NORMAL_MAP);
-  map.addMapType(G_PHYSICAL_MAP);
-  arbaletMap.getName = function (a) { return a ? 'Arb' : 'Arbalet'; };
-  arbaletMap.getAlt = function () { return 'Show Arbalet topography map'; };
-  slazavMap.getName = function (a) { return a ? 'Sla' : 'Slazav'; };
-  slazavMap.getAlt = function () { return 'Show Slazav topography map'; };
-  G_NORMAL_MAP.getName = function (a) { return 'Map'; };
-  G_NORMAL_MAP.getAlt = function () { return 'Show street map'; };
-  G_SATELLITE_MAP.getName = function (a) { return a ? 'Sat' : 'Satellite'; };
-  G_SATELLITE_MAP.getAlt = function () { return 'Show satellite imagery'; };
-  G_HYBRID_MAP.getName = function (a) { return a ? 'Hyb' : 'Hybrid'; };
-  G_HYBRID_MAP.getAlt = function () { return 'Show imagery with street names'; };
-  G_PHYSICAL_MAP.getName = function (a) { return a ? 'Ter' : 'Terrain'; };
-  G_PHYSICAL_MAP.getAlt = function () { return 'Show street map with terrain'; };
-  map.setMapType(mapType == "arb" ? arbaletMap : mapType);
-  map.addControl(new PanoramioControl());
-  map.addControl(new WikimapiaControl());*/
+  mapType = mapType in baseLayers ? mapType : 'arb';
+  map.addLayer(baseLayers[mapType]);
+  
+  var osm = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+  
+  L.control.layers({
+    Slazav: baseLayers.sla,
+    Arbalet: baseLayers.arb,
+    OSM: baseLayers.osm
+  }, {}, {collapsed: false}).addTo(map);
   
   var name = data.name;
   var xmldesc = null;
@@ -251,45 +219,6 @@ BigIcon = L.icon({
     iconSize: [13, 23],
     iconAnchor: [6, 23]
 });
-
-/*BigIcon.image = "icons/marker2.png";
-BigIcon.iconSize = new GSize(13, 23);
-BigIcon.shadow = null;
-BigIcon.shadowSize = new GSize(0, 0);
-BigIcon.iconAnchor = new GPoint(6, 23);
-BigIcon.gMarker = null;
-BigIcon.prevWaypoint = null;*/
-
-//======================================
-
-centerIcon = L.icon({
-    iconUrl: "treks/gmap/icons/center.png",
-    iconSize: [13, 23],
-    iconAnchor: [11, 12]
-});
-
-/*centerIcon.image = "http://turpohod.narod.ru/treks/gmap/icons/center.png";
-centerIcon.iconSize = new GSize(23, 23);
-centerIcon.iconAnchor = new GPoint(11, 12);
-centerMarker = null;*/
-
-function CenterMap () {
-  return;
-  var lat = parseFloat(document.getElementById("lat").value);
-  var lon = parseFloat(document.getElementById("lon").value);
-  if (isFinite(lat) && isFinite(lat))
-  {
-    var point = new GLatLng(lat, lon);
-    map.setCenter(point, 14);
-    if (centerMarker == null)
-    {
-      centerMarker = new GMarker(new GLatLng(lat, lon), centerIcon);
-      map.addOverlay(centerMarker);
-    }
-    else
-      centerMarker.setPoint(point);
-  }
-}
 
 //======================================
 
